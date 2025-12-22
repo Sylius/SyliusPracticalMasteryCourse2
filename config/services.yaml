@@ -40,3 +40,9 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    App\Cli\TestCommand:
+        arguments:
+            - '@sylius.repository.brand'
+            - '@sylius.factory.brand'
+            - '@sylius.manager.brand'
