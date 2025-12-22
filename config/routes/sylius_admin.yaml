@@ -1,3 +1,21 @@
 sylius_admin:
     resource: "@SyliusAdminBundle/Resources/config/routing.yml"
     prefix: '/%sylius_admin.path_name%'
+
+sylius_admin_brand_index:
+    path: '/%sylius_admin.path_name%/brands'
+    defaults:
+        _controller: sylius.controller.brand::indexAction
+        _sylius:
+            template:
+                'admin/brand/crud/index.html.twig'
+
+sylius_admin_brand:
+    resource: |
+        alias: sylius.brand
+        section: admin
+        templates: '@SyliusAdmin\\shared\\crud'
+        redirect: update
+        only: ['create', 'show', 'update']
+    type: sylius.resource
+    prefix: '/%sylius_admin.path_name%'
