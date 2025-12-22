@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Cli;
 
 use App\Entity\Brand\Brand;
+use App\Entity\Product\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
 use Sylius\Resource\Factory\FactoryInterface;
@@ -18,7 +19,7 @@ class TestCommand extends Command
 {
     public function __construct(
         private RepositoryInterface $brandRepository,
-        private FactoryInterface $brandFactory,
+        private RepositoryInterface $productRepository,
         private EntityManagerInterface $brandManager,
     ) {
         parent::__construct();
@@ -31,25 +32,23 @@ class TestCommand extends Command
             'code' => $code
         ]);
 
-        if ($brand instanceof Brand) {
-            $output->writeln('Brand already exists');
-            $output->writeln('Brand code: ' . $brand->getCode());
-            $output->writeln('Brand name: ' . $brand->getName());
-
-            return Command::SUCCESS;
+        if (!$brand instanceof Brand) {
+            return Command::FAILURE;
         }
 
-        /** @var Brand $brand */
-        $brand = $this->brandFactory->createNew();
-        $brand->setCode($code);
-        $brand->setName(ucfirst($code));
+        $product = $this->productRepository->findOneBy([
+            'code' => 'Ethereal_Drift_T_Shirt'
+        ]);
 
-        $this->brandManager->persist($brand);
+        if (!$product instanceof Product) {
+            return Command::FAILURE;
+        }
+
+        $brand->addProduct($product);
+
         $this->brandManager->flush();
 
-        $output->writeln('Brand was created');
-        $output->writeln('Brand code: ' . $brand->getCode());
-        $output->writeln('Brand name: ' . $brand->getName());
+        $output->writeln('Brand was associated to product ' . $product->getCode());
 
         return Command::SUCCESS;
     }

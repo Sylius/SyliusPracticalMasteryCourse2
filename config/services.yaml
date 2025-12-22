@@ -44,5 +44,5 @@ services:
     App\Cli\TestCommand:
         arguments:
             - '@sylius.repository.brand'
-            - '@sylius.factory.brand'
+            - '@sylius.repository.product'
             - '@sylius.manager.brand'

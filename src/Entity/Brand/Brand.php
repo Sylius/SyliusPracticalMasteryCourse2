@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity\Brand;
 
+use App\Entity\Product\Product;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Sylius\Resource\Model\CodeAwareInterface;
 use Sylius\Resource\Model\ResourceInterface;
@@ -22,6 +25,14 @@ class Brand implements ResourceInterface, CodeAwareInterface
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
+
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'brand')]
+    private Collection $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -46,5 +57,26 @@ class Brand implements ResourceInterface, CodeAwareInterface
     public function setCode(?string $code): void
     {
         $this->code = $code;
+    }
+
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): void
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->setBrand($this);
+        }
+    }
+
+    public function removeProduct(Product $product): void
+    {
+        if ($this->products->contains($product)) {
+            $this->products->removeElement($product);
+            $product->setBrand(null);
+        }
     }
 }
