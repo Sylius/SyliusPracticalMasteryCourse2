@@ -46,3 +46,7 @@ services:
             - '@sylius.repository.brand'
             - '@sylius.repository.product'
             - '@sylius.manager.brand'
+
+    App\Form\Type\BrandType:
+        arguments:
+            - '%sylius.model.brand.class%'

@@ -17,5 +17,7 @@ sylius_admin_brand:
         templates: '@SyliusAdmin\\shared\\crud'
         redirect: update
         only: ['create', 'show', 'update']
+        form:
+            type: App\Form\Type\BrandType
     type: sylius.resource
     prefix: '/%sylius_admin.path_name%'
