@@ -18,3 +18,8 @@ sylius_twig_hooks:
         'sylius_admin.product.update.content.form.sections.brand':
             brand:
                 template: 'admin/product/form/sections/brand/brand.html.twig'
+
+        'sylius_shop.base.header.navbar.menu':
+            branded_products:
+                template: 'shop/base/header/navbar/menu/branded_products.html.twig'
+                priority: 500

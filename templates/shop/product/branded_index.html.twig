@@ -1,0 +1,9 @@
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+
+{% block content %}
+    <div class="products-grid">
+        {% for product in products %}
+            {{ component('sylius_shop:product:card', { product: product, template: '@SyliusShop/product/common/card.html.twig'}) }}
+        {% endfor %}
+    </div>
+{% endblock %}

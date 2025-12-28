@@ -24,3 +24,13 @@ sylius_shop_request_password_reset_token_redirect:
     defaults:
         route: sylius_shop_request_password_reset_token
         permanent: false
+
+sylius_shop_branded_products_index:
+    path: /{_locale}/branded-products
+    methods: [GET]
+    defaults:
+        _controller: sylius.controller.product::indexAction
+        _sylius:
+            template: 'shop/product/branded_index.html.twig'
+            repository:
+                method: findBranded
