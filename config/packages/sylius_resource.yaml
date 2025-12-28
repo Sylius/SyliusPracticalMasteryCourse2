@@ -7,4 +7,5 @@ sylius_resource:
         sylius.brand:
             classes:
                 model: App\Entity\Brand\Brand
+                repository: App\Repository\BrandRepository
 #                form: App\Form\Type\BrandType

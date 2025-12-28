@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Extension;
 
 use App\Entity\Brand\Brand;
+use App\Repository\BrandRepository;
 use Sylius\Bundle\AdminBundle\Form\Type\ProductType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractTypeExtension;
@@ -20,6 +21,9 @@ final class ProductTypeExtension extends AbstractTypeExtension
                 'class' => Brand::class,
                 'choice_label' => 'name',
                 'placeholder' => 'sylius.ui.choose_brand',
+                'query_builder' => function (BrandRepository $repository) {
+                    return $repository->createEnabledQueryBuilder();
+                }
             ])
         ;
     }
