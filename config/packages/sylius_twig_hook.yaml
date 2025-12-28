@@ -1,0 +1,20 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_admin.product.create.content.form.side_navigation':
+            brand:
+                template: 'admin/product/form/side_navigation/brand.html.twig'
+        'sylius_admin.product.create.content.form.sections':
+            brand:
+                template: 'admin/product/form/sections/brand.html.twig'
+        'sylius_admin.product.create.content.form.sections.brand':
+            brand:
+                template: 'admin/product/form/sections/brand/brand.html.twig'
+        'sylius_admin.product.update.content.form.side_navigation':
+            brand:
+                template: 'admin/product/form/side_navigation/brand.html.twig'
+        'sylius_admin.product.update.content.form.sections':
+            brand:
+                template: 'admin/product/form/sections/brand.html.twig'
+        'sylius_admin.product.update.content.form.sections.brand':
+            brand:
+                template: 'admin/product/form/sections/brand/brand.html.twig'
