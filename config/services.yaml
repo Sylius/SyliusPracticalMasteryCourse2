@@ -34,6 +34,7 @@ services:
         exclude:
             - '../src/Entity/'
             - '../src/Kernel.php'
+            - '../src/Factory/'
 
     # Controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -50,3 +51,9 @@ services:
     App\Form\Type\BrandType:
         arguments:
             - '%sylius.model.brand.class%'
+
+    sylius.custom_factory.brand:
+        class: App\Factory\BrandFactory
+        decorates: sylius.factory.brand
+        arguments:
+            - '@sylius.custom_factory.brand.inner'
