@@ -8,4 +8,5 @@ sylius_resource:
             classes:
                 model: App\Entity\Brand\Brand
                 repository: App\Repository\BrandRepository
+                controller: App\Controller\BrandController
 #                form: App\Form\Type\BrandType
