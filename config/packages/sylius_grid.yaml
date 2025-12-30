@@ -1,0 +1,52 @@
+sylius_grid:
+    grids:
+        sylius_admin_brand:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: "%sylius.model.brand.class%"
+            sorting:
+                createdAt: desc
+            fields:
+                id: 
+                    type: string
+                code:
+                    type: string
+                name:
+                    type: string
+                createdAt:
+                    type: datetime
+                    sortable: ~
+                updatedAt:
+                    type: datetime
+                    sortable: ~
+                enabled:
+                    type: twig
+                    options:
+                        template: "@SyliusAdmin/shared/grid/field/boolean.html.twig"
+            actions:
+                main:
+                    create:
+                        type: create
+                item:
+                    show:
+                        type: show
+                    update:
+                        type: update
+                    delete:
+                        type: delete
+                bulk:
+                    delete:
+                        type: delete
+            filters:
+                search:
+                    type: string
+                    options:
+                        fields: [code, name]
+                enabled:
+                    type: boolean
+                createdAt:
+                    type: date
+                    options:
+                        field: createdAt
+                        inclusive_to: true

@@ -2,14 +2,6 @@ sylius_admin:
     resource: "@SyliusAdminBundle/Resources/config/routing.yml"
     prefix: '/%sylius_admin.path_name%'
 
-sylius_admin_brand_index:
-    path: '/%sylius_admin.path_name%/brands'
-    defaults:
-        _controller: sylius.controller.brand::indexAction
-        _sylius:
-            template:
-                'admin/brand/crud/index.html.twig'
-
 sylius_admin_brand_create_from_code:
     path: '/%sylius_admin.path_name%/brands/{code}/new'
     methods: [GET, POST]
@@ -30,8 +22,8 @@ sylius_admin_brand:
         section: admin
         templates: '@SyliusAdmin\\shared\\crud'
         redirect: update
-        only: ['create', 'show', 'update']
         form:
             type: App\Form\Type\BrandType
+        grid: sylius_admin_brand
     type: sylius.resource
     prefix: '/%sylius_admin.path_name%'
