@@ -50,3 +50,18 @@ sylius_grid:
                     options:
                         field: createdAt
                         inclusive_to: true
+        
+        sylius_admin_product:
+            filters:
+                brand:
+                    type: entity
+                    form_options:
+                        class: "%sylius.model.brand.class%"
+                        choice_label: name
+            fields:
+                mainTaxon:
+                    enabled: false
+                image:
+                    position: 1
+                enabled:
+                    position: 2
