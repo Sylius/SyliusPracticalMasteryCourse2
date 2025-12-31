@@ -27,6 +27,14 @@ sylius_grid:
                     type: twig
                     options:
                         template: "@SyliusAdmin/shared/grid/field/boolean.html.twig"
+                associated_products:
+                    path: .
+                    type: twig
+                    options:
+                        template: "admin/grid/field/associated_products.html.twig"
+                associated_products_alt:
+                    type: associated_products
+                    label: sylius.ui.associated_products
             actions:
                 main:
                     create:

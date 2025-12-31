@@ -57,3 +57,7 @@ services:
         decorates: sylius.factory.brand
         arguments:
             - '@sylius.custom_factory.brand.inner'
+
+    App\Grid\Field\AssociatedProductsType:
+        tags:
+            - { name: sylius.grid_field, type: associated_products }
