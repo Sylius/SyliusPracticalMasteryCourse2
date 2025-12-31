@@ -1,4 +1,7 @@
 sylius_grid:
+    templates:
+        action:
+            show_products: 'admin/grid/action/show_products.html.twig'
     grids:
         sylius_admin_brand:
             driver:
@@ -35,6 +38,22 @@ sylius_grid:
                         type: update
                     delete:
                         type: delete
+                    show_products:
+                        type: show_products
+                        label: sylius.ui.show_products
+                        options:
+                            link:
+                                route: sylius_shop_branded_products_index
+                                parameters:
+                                    code: resource.code
+                    show_products_alt:
+                        type: default
+                        icon: "tabler:eye"
+                        options:
+                            link:
+                                route: sylius_shop_branded_products_index
+                                parameters:
+                                    code: resource.code
                 bulk:
                     delete:
                         type: delete
