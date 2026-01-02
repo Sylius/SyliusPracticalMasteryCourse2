@@ -61,3 +61,7 @@ services:
     App\Grid\Field\AssociatedProductsType:
         tags:
             - { name: sylius.grid_field, type: associated_products }
+
+    App\Grid\Filter\UpdateDelayFilter:
+        tags:
+            - { name: sylius.grid_filter, type: update_delay, form_type: App\Form\Type\UpdateDelayFilterType }

@@ -2,12 +2,16 @@ sylius_grid:
     templates:
         action:
             show_products: 'admin/grid/action/show_products.html.twig'
+        filter:
+            update_delay: 'admin/grid/filter/update_delay.html.twig'
     grids:
         sylius_admin_brand:
             driver:
                 name: doctrine/orm
                 options:
                     class: "%sylius.model.brand.class%"
+                    repository:
+                        method: createAdminGridQueryBuilder
             sorting:
                 createdAt: desc
             fields:
@@ -77,6 +81,8 @@ sylius_grid:
                     options:
                         field: createdAt
                         inclusive_to: true
+                update_delay:
+                    type: update_delay
         
         sylius_admin_product:
             filters:

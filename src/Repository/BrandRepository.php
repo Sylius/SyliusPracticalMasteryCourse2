@@ -36,4 +36,11 @@ final class BrandRepository extends EntityRepository implements RepositoryInterf
             ->getOneOrNullResult()
         ;
     }
+
+    public function createAdminGridQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('b')
+//            ->join('b.products', 'products')
+        ;
+    }
 }
