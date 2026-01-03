@@ -16,6 +16,18 @@ sylius_admin_brand_create_from_code:
                 arguments:
                     - $code
 
+sylius_admin_brand_bulk_export:
+    path: '/%sylius_admin.path_name%/brands/export'
+    methods: [POST]
+    defaults:
+        _controller: sylius.controller.brand::bulkExportAction
+        _sylius:
+            section: admin
+            paginate: false
+            repository:
+                method: findByIds
+                arguments: [$ids]
+    
 sylius_admin_brand:
     resource: |
         alias: sylius.brand

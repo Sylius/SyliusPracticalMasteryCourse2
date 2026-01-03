@@ -1,1 +1,28 @@
 {{ encore_entry_script_tags('app-admin-entry', null, 'app.admin') }}
+
+<script>
+    function syliusBulkExport(form) {
+        const groupName = form.getAttribute('data-bulk-export');
+        const groupItems = Array.from(document.querySelectorAll(`input[data-check-all-group="${groupName}"]`));
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            groupItems.forEach((item) => {
+                if (item.checked) {
+                    const newItem = document.createElement('input');
+                    newItem.setAttribute('type', 'hidden');
+                    newItem.setAttribute('name', 'ids[]');
+                    newItem.setAttribute('value', item.value);
+
+                    form.appendChild(newItem);
+                }
+            });
+            e.target.submit();
+        });
+    }
+
+    (function () {
+        document.querySelectorAll('[data-bulk-export]').forEach(syliusBulkExport);
+    }());
+</script>

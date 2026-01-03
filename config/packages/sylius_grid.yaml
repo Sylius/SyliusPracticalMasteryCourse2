@@ -4,6 +4,8 @@ sylius_grid:
             show_products: 'admin/grid/action/show_products.html.twig'
         filter:
             update_delay: 'admin/grid/filter/update_delay.html.twig'
+        bulk_action:
+            export: 'admin/grid/bulk_action/export.html.twig'
     grids:
         sylius_admin_brand:
             driver:
@@ -69,6 +71,8 @@ sylius_grid:
                 bulk:
                     delete:
                         type: delete
+                    export:
+                        type: export
             filters:
                 search:
                     type: string

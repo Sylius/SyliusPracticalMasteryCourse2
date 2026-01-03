@@ -43,4 +43,14 @@ final class BrandRepository extends EntityRepository implements RepositoryInterf
 //            ->join('b.products', 'products')
         ;
     }
+
+    public function findByIds(array $ids): array
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
