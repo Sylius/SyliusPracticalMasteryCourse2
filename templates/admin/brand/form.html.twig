@@ -1,0 +1,30 @@
+{% import '@SyliusAdmin/shared/helper/translations.html.twig' as translations %}
+{% set form = hookable_metadata.context.form %}
+
+<div class="card mb-3">
+    <div class="card-header">
+        {{ 'sylius.ui.general'|trans }}
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6">
+                {{ form_row(form.name) }}
+            </div>
+            <div class="col-6">
+                {{ form_row(form.code) }}
+            </div>
+            <div class="col-6">
+                {{ form_row(form.enabled) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">
+        {{ 'sylius.ui.translations'|trans }}
+    </div>
+    <div>
+        {{ translations.default(form.translations) }}
+    </div>
+</div>

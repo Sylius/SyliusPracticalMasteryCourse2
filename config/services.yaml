@@ -52,6 +52,10 @@ services:
         arguments:
             - '%sylius.model.brand.class%'
 
+    App\Form\Type\BrandTranslationType:
+        arguments:
+            - '%sylius.model.brand_translation.class%'
+
     sylius.custom_factory.brand:
         class: App\Factory\BrandFactory
         decorates: sylius.factory.brand

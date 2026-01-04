@@ -36,6 +36,8 @@ sylius_shop_branded_products_index:
                 method: findBranded
                 arguments:
                     - expr:service('sylius.repository.brand').findOneByCode($code)
+            vars:
+                brand: expr:service('sylius.repository.brand').findOneByCode($code)
 
 sylius_shop_partial_branded_products_index:
     path: /{_locale}/_partial/brands

@@ -23,3 +23,10 @@ sylius_twig_hooks:
             branded_products:
                 template: 'shop/base/header/navbar/menu/branded_products.html.twig'
                 priority: 500
+
+        'sylius_admin.brand.create.content.form':
+            sections:
+                template: 'admin/brand/form.html.twig'
+        'sylius_admin.brand.update.content.form':
+            sections:
+                template: 'admin/brand/form.html.twig'

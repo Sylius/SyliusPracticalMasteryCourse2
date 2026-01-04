@@ -15,12 +15,20 @@ use Sylius\Resource\Model\TimestampableInterface;
 use Sylius\Resource\Model\TimestampableTrait;
 use Sylius\Resource\Model\ToggleableInterface;
 use Sylius\Resource\Model\ToggleableTrait;
+use Sylius\Resource\Model\TranslatableInterface;
+use Sylius\Resource\Model\TranslatableTrait;
+use Sylius\Resource\Model\TranslationInterface;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'sylius_brand')]
-class Brand implements ResourceInterface, CodeAwareInterface, ToggleableInterface, TimestampableInterface
+class Brand implements ResourceInterface, CodeAwareInterface, ToggleableInterface, TimestampableInterface, TranslatableInterface
 {
     use ToggleableTrait, TimestampableTrait;
+
+    use TranslatableTrait {
+        __construct as private initializeTranslationsCollection;
+        getTranslation as private doGetTranslation;
+    }
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -53,6 +61,7 @@ class Brand implements ResourceInterface, CodeAwareInterface, ToggleableInterfac
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->initializeTranslationsCollection();
     }
 
     public function getId(): ?int
@@ -99,5 +108,28 @@ class Brand implements ResourceInterface, CodeAwareInterface, ToggleableInterfac
             $this->products->removeElement($product);
             $product->setBrand(null);
         }
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->getTranslation()->setDescription($description);
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->getTranslation()->getDescription();
+    }
+
+    public function getTranslation(?string $locale = null): BrandTranslation
+    {
+        /** @var BrandTranslation $translation */
+        $translation = $this->doGetTranslation($locale);
+
+        return $translation;
+    }
+
+    protected function createTranslation(): TranslationInterface
+    {
+        return new BrandTranslation();
     }
 }

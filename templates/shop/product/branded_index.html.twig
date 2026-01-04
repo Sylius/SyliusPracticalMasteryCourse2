@@ -1,6 +1,17 @@
 {% extends '@SyliusShop/shared/layout/base.html.twig' %}
 
 {% block content %}
+    {% set brand = configuration.parameters.get('vars').brand %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="card-title">
+                {{ brand.name }}
+            </div>
+        </div>
+        <div class="card-body">
+            {{ brand.description }}
+        </div>
+    </div>
     <div class="products-grid">
         {% for product in products %}
             {{ component('sylius_shop:product:card', { product: product, template: '@SyliusShop/product/common/card.html.twig'}) }}
