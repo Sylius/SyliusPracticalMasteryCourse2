@@ -30,13 +30,13 @@ final class AdminBrandGrid extends AbstractGrid
         $gridBuilder->orderBy('createdAt', 'desc');
 
         $gridBuilder
-            ->addField(StringField::create('id'))
-            ->addField(StringField::create('code'))
-            ->addField(StringField::create('name'))
-            ->addField(DateTimeField::create('createdAt')->setSortable(true))
-            ->addField(DateTimeField::create('updatedAt')->setSortable(true))
-            ->addField(TwigField::create('enabled', '@SyliusAdmin/shared/grid/field/boolean.html.twig'))
-            ->addField(Field::create('associated_products', 'associated_products'))
+            ->addField(StringField::create('id')->setLabel('sylius.ui.id'))
+            ->addField(StringField::create('code')->setLabel('sylius.ui.code'))
+            ->addField(StringField::create('name')->setLabel('sylius.ui.name'))
+            ->addField(DateTimeField::create('createdAt')->setSortable(true)->setLabel('sylius.ui.created_at'))
+            ->addField(DateTimeField::create('updatedAt')->setSortable(true)->setLabel('sylius.ui.updated_at'))
+            ->addField(TwigField::create('enabled', '@SyliusAdmin/shared/grid/field/boolean.html.twig')->setLabel('sylius.ui.enabled'))
+            ->addField(Field::create('associated_products', 'associated_products')->setLabel('sylius.ui.associated_products'))
         ;
 
         $gridBuilder
@@ -72,19 +72,19 @@ final class AdminBrandGrid extends AbstractGrid
             ->addFilter(
                 Filter::create('search', 'string')->setOptions([
                     'fields' => ['code', 'name'],
-                ])
+                ])->setLabel('sylius.ui.search')
             )
             ->addFilter(
-                Filter::create('enabled', 'boolean')
+                Filter::create('enabled', 'boolean')->setLabel('sylius.ui.enabled')
             )
             ->addFilter(
                 Filter::create('createdAt', 'date')->setOptions([
                     'field' => 'createdAt',
                     'inclusive_to' => true,
-                ])
+                ])->setLabel('sylius.ui.created_at')
             )
             ->addFilter(
-                Filter::create('update_delay', 'update_delay')
+                Filter::create('update_delay', 'update_delay')->setLabel('sylius.ui.update_delay')
             )
         ;
     }

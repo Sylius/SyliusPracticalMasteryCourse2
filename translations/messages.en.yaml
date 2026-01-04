@@ -1,0 +1,18 @@
+sylius:
+    ui:
+        branded_products: Branded Products
+        associated_products: Associated Products
+        brand: Brand
+        brands: Brands
+        select_an_option: Select an option
+        update_delay: Update delay
+        brand_for_product: Brand for productName product
+    form:
+        update_delay_filter:
+            delay_days:
+                never_updated: Never updated
+                1_day: ">= 1 day"
+                2_day: ">= 2 days"
+                3_day: ">= 3 days"
+                4_day: ">= 4 days"
+                7_day: ">= 7 days"

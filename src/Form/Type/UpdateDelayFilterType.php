@@ -15,15 +15,16 @@ final class UpdateDelayFilterType extends AbstractType
         $builder
             ->add('delay_days', ChoiceType::class, [
                 'choices' => [
-                    'Never updated' => 0,
-                    '>= 1 day' => 1,
-                    '>= 2 days' => 2,
-                    '>= 3 days' => 3,
-                    '>= 4 days' => 4,
-                    '>= 7 days' => 7,
+                    'sylius.form.update_delay_filter.delay_days.never_updated' => 0,
+                    'sylius.form.update_delay_filter.delay_days.1_day' => 1,
+                    'sylius.form.update_delay_filter.delay_days.2_day' => 2,
+                    'sylius.form.update_delay_filter.delay_days.3_day' => 3,
+                    'sylius.form.update_delay_filter.delay_days.4_day' => 4,
+                    'sylius.form.update_delay_filter.delay_days.7_day' => 7,
                 ],
                 'placeholder' => 'sylius.ui.select_an_option',
                 'required' => false,
+                'label' => 'sylius.ui.update_delay'
             ])
         ;
     }

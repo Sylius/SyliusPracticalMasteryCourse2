@@ -1,0 +1,4 @@
+sylius:
+    locale:
+        code:
+            not_blank: Locale cannot exists without a code
