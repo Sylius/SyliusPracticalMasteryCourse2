@@ -39,3 +39,14 @@ sylius_admin_brand:
         grid: sylius_admin_brand
     type: sylius.resource
     prefix: '/%sylius_admin.path_name%'
+
+sylius_admin_brand_apply_state_machine_transition:
+    path: '/%sylius_admin.path_name%/brands/{id}/{transition}'
+    methods: [PUT]
+    defaults:
+        _controller: sylius.controller.brand::applyStateMachineTransitionAction
+        _sylius:
+            state_machine:
+                graph: sylius_brand
+                transition: $transition
+            redirect: referer

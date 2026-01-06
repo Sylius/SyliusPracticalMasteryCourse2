@@ -7,6 +7,12 @@ sylius:
         select_an_option: Select an option
         update_delay: Update delay
         brand_for_product: Brand for productName product
+        approve: Approve
+        approved: Approved
+        suspend: Suspend
+        suspended: Suspended
+        reject: Reject
+        rejected: Rejected
     form:
         update_delay_filter:
             delay_days:

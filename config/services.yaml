@@ -45,7 +45,7 @@ services:
     App\Cli\TestCommand:
         arguments:
             - '@sylius.repository.brand'
-            - '@sylius.repository.product'
+            - '@sylius_abstraction.state_machine'
             - '@sylius.manager.brand'
 
     App\Form\Type\BrandType:

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Grid;
 
 use App\Entity\Brand\Brand;
+use App\SM\BrandTransitions;
 use Sylius\Bundle\GridBundle\Builder\Action\Action;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\BulkActionGroup;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
@@ -37,6 +38,14 @@ final class AdminBrandGrid extends AbstractGrid
             ->addField(DateTimeField::create('updatedAt')->setSortable(true)->setLabel('sylius.ui.updated_at'))
             ->addField(TwigField::create('enabled', '@SyliusAdmin/shared/grid/field/boolean.html.twig')->setLabel('sylius.ui.enabled'))
             ->addField(Field::create('associated_products', 'associated_products')->setLabel('sylius.ui.associated_products'))
+            ->addField(
+                TwigField::create('state', '@SyliusUi/grid/field/state.html.twig')
+                    ->setLabel('sylius.ui.state')
+                    ->setOption('vars', [
+                        'labels' => 'admin/grid/field/brand_state'
+                    ]
+                )
+            )
         ;
 
         $gridBuilder
@@ -57,7 +66,52 @@ final class AdminBrandGrid extends AbstractGrid
                                 'code' => 'resource.code'
                             ]
                         ]
-                    ])
+                    ]),
+                    Action::create('approve', 'apply_transition')
+                        ->setLabel('sylius.ui.approve')
+                        ->setIcon('tabler:check')
+                        ->setOptions([
+                            'link' => [
+                                'route' => 'sylius_admin_brand_apply_state_machine_transition',
+                                'parameters' => [
+                                    'id' => 'resource.id',
+                                    'transition' => BrandTransitions::TRANSITION_APPROVE,
+                                ]
+                            ],
+                            'graph' => BrandTransitions::GRAPH,
+                            'transition' => BrandTransitions::TRANSITION_APPROVE,
+                            'class' => 'btn-green'
+                        ]),
+                    Action::create('reject', 'apply_transition')
+                        ->setLabel('sylius.ui.reject')
+                        ->setIcon('tabler:x')
+                        ->setOptions([
+                            'link' => [
+                                'route' => 'sylius_admin_brand_apply_state_machine_transition',
+                                'parameters' => [
+                                    'id' => 'resource.id',
+                                    'transition' => BrandTransitions::TRANSITION_REJECT,
+                                ]
+                            ],
+                            'graph' => BrandTransitions::GRAPH,
+                            'transition' => BrandTransitions::TRANSITION_REJECT,
+                            'class' => 'btn-red'
+                        ]),
+                    Action::create('suspend', 'apply_transition')
+                        ->setLabel('sylius.ui.suspend')
+                        ->setIcon('tabler:hourglass-empty')
+                        ->setOptions([
+                            'link' => [
+                                'route' => 'sylius_admin_brand_apply_state_machine_transition',
+                                'parameters' => [
+                                    'id' => 'resource.id',
+                                    'transition' => BrandTransitions::TRANSITION_SUSPEND
+                                ]
+                            ],
+                            'graph' => BrandTransitions::GRAPH,
+                            'transition' => BrandTransitions::TRANSITION_SUSPEND,
+                            'class' => 'btn-yellow'
+                        ]),
                 )
             )
             ->addActionGroup(

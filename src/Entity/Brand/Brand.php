@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Brand;
 
 use App\Entity\Product\Product;
+use App\SM\BrandStates;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -57,6 +58,9 @@ class Brand implements ResourceInterface, CodeAwareInterface, ToggleableInterfac
     #[Gedmo\Timestampable(on: 'update')]
     /** @var \DateTimeInterface|null */
     protected $updatedAt;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $state = BrandStates::STATE_NEW;
 
     public function __construct()
     {
@@ -126,6 +130,16 @@ class Brand implements ResourceInterface, CodeAwareInterface, ToggleableInterfac
         $translation = $this->doGetTranslation($locale);
 
         return $translation;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(?string $state): void
+    {
+        $this->state = $state;
     }
 
     protected function createTranslation(): TranslationInterface

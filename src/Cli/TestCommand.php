@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Cli;
 
 use App\Entity\Brand\Brand;
-use App\Entity\Product\Product;
+use App\SM\BrandTransitions;
 use Doctrine\ORM\EntityManagerInterface;
+use Sylius\Abstraction\StateMachine\StateMachineInterface;
 use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
-use Sylius\Resource\Factory\FactoryInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,7 +19,7 @@ class TestCommand extends Command
 {
     public function __construct(
         private RepositoryInterface $brandRepository,
-        private RepositoryInterface $productRepository,
+        private StateMachineInterface $stateMachine,
         private EntityManagerInterface $brandManager,
     ) {
         parent::__construct();
@@ -27,28 +27,19 @@ class TestCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $code = 'yamaha';
-        $brand = $this->brandRepository->findOneBy([
-            'code' => $code
-        ]);
+        /** @var Brand $brand */
+        foreach ($this->brandRepository->findAll() as $brand) {
+            if (false === $this->stateMachine->can($brand, BrandTransitions::GRAPH, BrandTransitions::TRANSITION_APPROVE)) {
+                $output->writeln('Cannot apply transition to: ' . $brand->getName());
 
-        if (!$brand instanceof Brand) {
-            return Command::FAILURE;
+                continue;
+            }
+
+            $this->stateMachine->apply($brand, BrandTransitions::GRAPH, BrandTransitions::TRANSITION_APPROVE);
         }
-
-        $product = $this->productRepository->findOneBy([
-            'code' => 'Ethereal_Drift_T_Shirt'
-        ]);
-
-        if (!$product instanceof Product) {
-            return Command::FAILURE;
-        }
-
-        $brand->addProduct($product);
 
         $this->brandManager->flush();
-
-        $output->writeln('Brand was associated to product ' . $product->getCode());
+        $output->writeln('Done!');
 
         return Command::SUCCESS;
     }
