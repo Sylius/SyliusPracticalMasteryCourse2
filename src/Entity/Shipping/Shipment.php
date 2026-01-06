@@ -11,4 +11,5 @@ use Sylius\Component\Core\Model\Shipment as BaseShipment;
 #[ORM\Table(name: 'sylius_shipment')]
 class Shipment extends BaseShipment
 {
+    public const string STATE_PREPARING = 'preparing';
 }

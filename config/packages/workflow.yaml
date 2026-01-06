@@ -31,3 +31,18 @@ framework:
                       - !php/const App\SM\BrandStates::STATE_APPROVED
                   to:
                       - !php/const App\SM\BrandStates::STATE_SUSPENDED
+        !php/const App\SM\ShipmentTransitions::GRAPH:
+            places:
+                - !php/const App\Entity\Shipping\Shipment::STATE_PREPARING
+            transitions:
+              !php/const App\SM\ShipmentTransitions::TRANSITION_PREPARE:
+                  from:
+                      - !php/const App\Entity\Shipping\Shipment::STATE_READY
+                  to:
+                      - !php/const App\Entity\Shipping\Shipment::STATE_PREPARING
+              !php/const App\SM\ShipmentTransitions::TRANSITION_SHIP:
+                  from:
+                      - !php/const App\Entity\Shipping\Shipment::STATE_READY
+                      - !php/const App\Entity\Shipping\Shipment::STATE_PREPARING
+                  to:
+                      - !php/const App\Entity\Shipping\Shipment::STATE_SHIPPED

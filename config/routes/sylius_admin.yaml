@@ -50,3 +50,19 @@ sylius_admin_brand_apply_state_machine_transition:
                 graph: sylius_brand
                 transition: $transition
             redirect: referer
+
+sylius_admin_shipment_prepare:
+    path: '/%sylius_admin.path_name%/orders/{orderId}/shipment/{shipmentId}/prepare'
+    methods: [PUT]
+    defaults:
+        _controller: sylius.controller.shipment::applyStateMachineTransitionAction
+        _sylius:
+            state_machine:
+                graph: sylius_shipment
+                transition: prepare
+            redirect: referer
+            repository:
+                method: findOneByOrderId
+                arguments:
+                    - $shipmentId
+                    - $orderId

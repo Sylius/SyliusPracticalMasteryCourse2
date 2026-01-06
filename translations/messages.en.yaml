@@ -13,6 +13,8 @@ sylius:
         suspended: Suspended
         reject: Reject
         rejected: Rejected
+        prepare: Prepare
+        preparing: Preparing
     form:
         update_delay_filter:
             delay_days:

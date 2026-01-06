@@ -1,0 +1,16 @@
+{% set shipment = hookable_metadata.context.shipment %}
+{% set order = hookable_metadata.context.order %}
+{% set path = path('sylius_admin_shipment_prepare', { orderId: order.id, shipmentId: shipment.id }) %}
+
+{% if sylius_sm_can(shipment, constant('App\\SM\\ShipmentTransitions::GRAPH'), constant('App\\SM\\ShipmentTransitions::TRANSITION_PREPARE')) %}
+    <form name="sylius_admin_shipment_prepare" method="post" action="{{ path }}">
+        <input type="hidden" name="_method" value="PUT">
+        <div class="input-group flex-nowrap">
+            <button type="submit" class="btn">
+                {{ ux_icon('tabler:check') }}
+                {{ 'sylius.ui.prepare'|trans }}
+            </button>
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token(shipment.id) }}">
+    </form>
+{% endif %}

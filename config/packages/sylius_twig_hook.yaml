@@ -30,3 +30,8 @@ sylius_twig_hooks:
         'sylius_admin.brand.update.content.form':
             sections:
                 template: 'admin/brand/form.html.twig'
+
+        'sylius_admin.order.show.content.sections.shipments.item.actions':
+            prepare:
+                template: 'admin/order/show/content/sections/shipment/item/actions/prepare.html.twig'
+                priority: 300
