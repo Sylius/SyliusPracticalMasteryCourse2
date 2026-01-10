@@ -46,4 +46,6 @@ sylius_shop_partial_branded_products_index:
         _sylius:
             template: "shop/brand/partial/_brand.html.twig"
             repository:
-                method: findEnabled
+                method: findEnabledByChannel
+                arguments:
+                    - expr:service('sylius.context.channel').getChannel()

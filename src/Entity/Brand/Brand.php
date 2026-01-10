@@ -10,6 +10,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Sylius\Component\Channel\Model\ChannelInterface;
+use Sylius\Component\Channel\Model\ChannelsAwareInterface;
 use Sylius\Resource\Model\CodeAwareInterface;
 use Sylius\Resource\Model\ResourceInterface;
 use Sylius\Resource\Model\TimestampableInterface;
@@ -22,7 +24,13 @@ use Sylius\Resource\Model\TranslationInterface;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'sylius_brand')]
-class Brand implements ResourceInterface, CodeAwareInterface, ToggleableInterface, TimestampableInterface, TranslatableInterface
+class Brand implements
+    ResourceInterface,
+    CodeAwareInterface,
+    ToggleableInterface,
+    TimestampableInterface,
+    TranslatableInterface,
+    ChannelsAwareInterface
 {
     use ToggleableTrait, TimestampableTrait;
 
@@ -62,9 +70,22 @@ class Brand implements ResourceInterface, CodeAwareInterface, ToggleableInterfac
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $state = BrandStates::STATE_NEW;
 
+    #[ORM\ManyToMany(targetEntity: ChannelInterface::class)]
+    #[ORM\JoinTable(
+        name: 'sylius_brand_channel',
+        joinColumns: [
+            new ORM\JoinColumn(name: 'brand_id', referencedColumnName: 'id')
+        ],
+        inverseJoinColumns: [
+            new ORM\JoinColumn(name: 'channel_id', referencedColumnName: 'id')
+        ]
+    )]
+    private Collection $channels;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->channels = new ArrayCollection();
         $this->initializeTranslationsCollection();
     }
 
@@ -145,5 +166,29 @@ class Brand implements ResourceInterface, CodeAwareInterface, ToggleableInterfac
     protected function createTranslation(): TranslationInterface
     {
         return new BrandTranslation();
+    }
+
+    public function getChannels(): Collection
+    {
+        return $this->channels;
+    }
+
+    public function hasChannel(ChannelInterface $channel): bool
+    {
+        return $this->channels->contains($channel);
+    }
+
+    public function addChannel(ChannelInterface $channel): void
+    {
+        if (!$this->hasChannel($channel)) {
+            $this->channels->add($channel);
+        }
+    }
+
+    public function removeChannel(ChannelInterface $channel): void
+    {
+        if ($this->hasChannel($channel)) {
+            $this->channels->removeElement($channel);
+        }
     }
 }

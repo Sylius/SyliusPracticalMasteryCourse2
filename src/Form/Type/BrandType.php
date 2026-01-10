@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type;
 
+use Sylius\Bundle\ChannelBundle\Form\Type\ChannelChoiceType;
 use Sylius\Bundle\ResourceBundle\Form\EventSubscriber\AddCodeFormSubscriber;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Sylius\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
@@ -26,6 +27,11 @@ final class BrandType extends AbstractResourceType
             ])
             ->add('translations', ResourceTranslationsType::class, [
                 'entry_type' => BrandTranslationType::class,
+            ])
+            ->add('channels', ChannelChoiceType::class, [
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'sylius.ui.channels',
             ])
         ;
     }

@@ -7,6 +7,7 @@ namespace App\Repository;
 use App\Entity\Brand\Brand;
 use Doctrine\ORM\QueryBuilder;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
 
 final class BrandRepository extends EntityRepository implements RepositoryInterface
@@ -49,6 +50,16 @@ final class BrandRepository extends EntityRepository implements RepositoryInterf
         return $this->createQueryBuilder('b')
             ->andWhere('b.id IN (:ids)')
             ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findEnabledByChannel(ChannelInterface $channel): array
+    {
+        return $this->createEnabledQueryBuilder()
+            ->andWhere(':channel MEMBER OF b.channels')
+            ->setParameter('channel', $channel)
             ->getQuery()
             ->getResult()
         ;
