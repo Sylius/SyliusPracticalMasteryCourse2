@@ -2,3 +2,11 @@ sylius:
     locale:
         code:
             not_blank: Locale cannot exists without a code
+    brand:
+        translation:
+            supported_channel_locales: Translations for %locale% locale must be provided
+        code:
+            not_blank: Brand cannot exists without a code
+        name:
+            not_blank: Brand cannot exists without a nam
+        

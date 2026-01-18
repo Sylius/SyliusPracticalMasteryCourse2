@@ -51,6 +51,8 @@ services:
     App\Form\Type\BrandType:
         arguments:
             - '%sylius.model.brand.class%'
+            - 
+                - 'sylius'
 
     App\Form\Type\BrandTranslationType:
         arguments:
