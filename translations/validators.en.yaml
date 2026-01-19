@@ -9,4 +9,7 @@ sylius:
             not_blank: Brand cannot exists without a code
         name:
             not_blank: Brand cannot exists without a nam
+    product:
+        brand:
+            not_null: Brand cannot exists without a brand
         
