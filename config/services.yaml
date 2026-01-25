@@ -88,3 +88,9 @@ services:
     App\Mailer\BrandEmailManager:
         bind:
             $defaultLocaleCode: '%locale%'
+
+    sylius.mailer.order_email_manager:
+        class: App\Mailer\OrderEmailManager
+        arguments:
+            - '@sylius.email_sender'
+            - '@sylius.repository.product'
