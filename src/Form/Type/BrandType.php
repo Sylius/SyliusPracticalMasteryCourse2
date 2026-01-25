@@ -35,4 +35,9 @@ final class BrandType extends AbstractResourceType
             ])
         ;
     }
+
+    public function getBlockPrefix(): string
+    {
+        return 'sylius_brand';
+    }
 }

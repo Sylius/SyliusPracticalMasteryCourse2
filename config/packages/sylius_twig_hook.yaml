@@ -23,6 +23,23 @@ sylius_twig_hooks:
             branded_products:
                 template: 'shop/base/header/navbar/menu/branded_products.html.twig'
                 priority: 500
+                
+        'sylius_admin.brand.create.content':
+            form:
+                component: 'sylius_admin.brand.form'
+                props:
+                    form: '@=_context.form'
+                    resource: '@=_context.resource'
+                    template: '@SyliusAdmin/shared/crud/common/content/form.html.twig'
+        'sylius_admin.brand.update.content':
+            form:
+                component: 'sylius_admin.brand.form'
+                props:
+                    form: '@=_context.form'
+                    resource: '@=_context.resource'
+                    template: '@SyliusAdmin/shared/crud/common/content/form.html.twig'
+                configuration:
+                    method: 'PUT'
 
         'sylius_admin.brand.create.content.form':
             sections:

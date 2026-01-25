@@ -73,3 +73,14 @@ services:
     App\Grid\Filter\UpdateDelayFilter:
         tags:
             - { name: sylius.grid_filter, type: update_delay, form_type: App\Form\Type\UpdateDelayFilterType }
+
+    sylius_admin.twig.component.brand.form:
+#        class: Sylius\Bundle\UiBundle\Twig\Component\ResourceFormComponent
+        class: App\Twig\Component\BrandFormComponent
+        arguments:
+            - '@sylius.repository.brand'
+            - '@form.factory'
+            - '%sylius.model.brand.class%'
+            - 'App\Form\Type\BrandType'
+        tags:
+            - { name: 'sylius.live_component.admin', key: 'sylius_admin.brand.form' }
