@@ -6,14 +6,21 @@ namespace App\EventSubscriber;
 
 use App\Entity\Brand\Brand;
 use App\Entity\Product\Product;
+use App\Mailer\BrandEmailManager;
 use Sylius\Bundle\ResourceBundle\Grid\View\ResourceGridView;
 use Sylius\Resource\Model\CodeAwareInterface;
 use Sylius\Resource\Symfony\EventDispatcher\GenericEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Workflow\Event\CompletedEvent;
 
 final class ResourceSubscriber implements EventSubscriberInterface
 {
+    public function __construct(
+        private BrandEmailManager $brandEmailManager,
+    ) {
+    }
+
     public static function getSubscribedEvents(): array
     {
         return [
@@ -22,6 +29,7 @@ final class ResourceSubscriber implements EventSubscriberInterface
             'sylius.brand.index' => 'onResourceIndex',
             'sylius.brand.initialize_create' => 'onBrandShow',
             'sylius.brand.pre_create' => 'onBrandPreCreate',
+            'workflow.sylius_brand.completed.approve' => 'onBrandApproval',
         ];
     }
 
@@ -71,5 +79,15 @@ final class ResourceSubscriber implements EventSubscriberInterface
 
         $response = new RedirectResponse('/admin');
         $event->setResponse($response);
+    }
+
+    public function onBrandApproval(CompletedEvent $event): void
+    {
+        $brand = $event->getSubject();
+        if (!$brand instanceof Brand) {
+            return;
+        }
+
+        $this->brandEmailManager->sendApprovalEmail($brand);
     }
 }

@@ -84,3 +84,7 @@ services:
             - 'App\Form\Type\BrandType'
         tags:
             - { name: 'sylius.live_component.admin', key: 'sylius_admin.brand.form' }
+
+    App\Mailer\BrandEmailManager:
+        bind:
+            $defaultLocaleCode: '%locale%'

@@ -24,3 +24,10 @@ sylius:
                 3_day: ">= 3 days"
                 4_day: ">= 4 days"
                 7_day: ">= 7 days"
+    email:
+        brand_approval:
+            subject: Your brand has been approved!
+            greeting: Hello %brand_name%,
+            body: >
+                We are pleased to inform you that your brand "%brand_name%" has been approved and is now live on our Shop
+            see_your_brand: See your brand

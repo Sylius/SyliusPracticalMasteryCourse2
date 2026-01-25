@@ -32,5 +32,21 @@
                 <option name="groups">sylius</option>
             </constraint>
         </property>
+        <property name="contactEmail">
+            <constraint name="NotBlank">
+                <option name="message">sylius.brand.email.not_blank</option>
+                <option name="groups">sylius</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="max">255</option>
+                <option name="maxMessage">sylius.brand.email.max</option>
+                <option name="groups">sylius</option>
+            </constraint>
+            <constraint name="Email">
+                <option name="message">sylius.brand.email.invalid</option>
+                <option name="mode">strict</option>
+                <option name="groups">sylius</option>
+            </constraint>
+        </property>
     </class>
 </constraint-mapping>

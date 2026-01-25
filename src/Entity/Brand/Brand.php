@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Channel\Model\ChannelsAwareInterface;
+use Sylius\Component\Locale\Model\LocaleInterface;
 use Sylius\Resource\Model\CodeAwareInterface;
 use Sylius\Resource\Model\ResourceInterface;
 use Sylius\Resource\Model\TimestampableInterface;
@@ -81,6 +82,13 @@ class Brand implements
         ]
     )]
     private Collection $channels;
+
+    #[ORM\ManyToOne(targetEntity: LocaleInterface::class)]
+    #[ORM\JoinColumn(name: 'default_locale_id', referencedColumnName: 'id', nullable: true)]
+    private ?LocaleInterface $defaultLocale = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $contactEmail = null;
 
     public function __construct()
     {
@@ -161,6 +169,26 @@ class Brand implements
     public function setState(?string $state): void
     {
         $this->state = $state;
+    }
+
+    public function getDefaultLocale(): ?LocaleInterface
+    {
+        return $this->defaultLocale;
+    }
+
+    public function setDefaultLocale(?LocaleInterface $defaultLocale): void
+    {
+        $this->defaultLocale = $defaultLocale;
+    }
+
+    public function getContactEmail(): ?string
+    {
+        return $this->contactEmail;
+    }
+
+    public function setContactEmail(?string $contactEmail): void
+    {
+        $this->contactEmail = $contactEmail;
     }
 
     protected function createTranslation(): TranslationInterface

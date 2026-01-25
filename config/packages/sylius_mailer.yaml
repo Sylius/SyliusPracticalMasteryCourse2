@@ -1,0 +1,4 @@
+sylius_mailer:
+    emails:
+        !php/const App\Mailer\Emails::BRAND_APPROVAL:
+            template: 'email/brand_approval.html.twig'
