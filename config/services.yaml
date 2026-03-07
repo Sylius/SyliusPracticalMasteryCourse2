@@ -56,6 +56,12 @@ services:
             - 
                 - 'sylius'
 
+    App\Form\Type\BrandImageType:
+        arguments:
+            - '%sylius.model.brand_image.class%'
+            -
+                - 'sylius'
+
     App\Form\Type\BrandTranslationType:
         arguments:
             - '%sylius.model.brand_translation.class%'
@@ -94,3 +100,12 @@ services:
         arguments:
             - '@sylius.email_sender'
             - '@sylius.repository.product'
+
+    app.listener.images_upload:
+        class: Sylius\Bundle\CoreBundle\EventListener\ImagesUploadListener
+        arguments:
+            - '@sylius.uploader.image'
+        tags:
+            - { name: kernel.event_listener, event: 'sylius.brand.pre_create', method: 'uploadImages' }
+            - { name: kernel.event_listener, event: 'sylius.brand.pre_update', method: 'uploadImages' }
+        

@@ -35,3 +35,40 @@
         {{ translations.default(form.translations) }}
     </div>
 </div>
+
+<div class="card mb-3">
+    <div class="card-header">
+        {{ 'sylius.ui.media'|trans }}
+    </div>
+    <div class="card-body">
+        <div class="row">
+            {% for image_form in form.images %}
+                <div class="col-12 col-md-6 row mb-4">
+                    <div class="col-auto">
+                        <div>
+                            {% if image_form.vars.value.path is not null %}
+                                <span class="avatar avatar-xl" style="background-image: url('{{ image_form.vars.value.path|imagine_filter('sylius_small') }}')"></span>
+                            {% else %}
+                                <span class="avatar avatar-xl"></span>
+                            {% endif %}
+                        </div>
+                        <div class="mt-3 d-flex items-center">
+                            {{ form_widget(image_form.vars.button_delete, { label: 'sylius.ui.delete'|trans, attr: { class: 'btn btn-outline-danger w-100','data-test-image-delete': '' }}) }}
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            {{ form_row(image_form.type) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_row(image_form.file) }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="d-grid gap-2">
+            {{ form_widget(form.images.vars.button_add) }}
+        </div>
+    </div>
+</div>

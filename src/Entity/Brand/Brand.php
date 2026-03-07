@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Channel\Model\ChannelsAwareInterface;
+use Sylius\Component\Core\Model\ImageInterface;
+use Sylius\Component\Core\Model\ImagesAwareInterface;
 use Sylius\Component\Locale\Model\LocaleInterface;
 use Sylius\Resource\Model\CodeAwareInterface;
 use Sylius\Resource\Model\ResourceInterface;
@@ -31,7 +33,8 @@ class Brand implements
     ToggleableInterface,
     TimestampableInterface,
     TranslatableInterface,
-    ChannelsAwareInterface
+    ChannelsAwareInterface,
+    ImagesAwareInterface
 {
     use ToggleableTrait, TimestampableTrait;
 
@@ -90,10 +93,14 @@ class Brand implements
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $contactEmail = null;
 
+    #[ORM\OneToMany(targetEntity: BrandImage::class, mappedBy: 'owner', cascade: ['all'], orphanRemoval: true)]
+    private Collection $images;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
         $this->channels = new ArrayCollection();
+        $this->images = new ArrayCollection();
         $this->initializeTranslationsCollection();
     }
 
@@ -217,6 +224,44 @@ class Brand implements
     {
         if ($this->hasChannel($channel)) {
             $this->channels->removeElement($channel);
+        }
+    }
+
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function getImagesByType(string $type): Collection
+    {
+        return $this->images->filter(function (ImageInterface $image) use ($type) {
+            return $image->getType() === $type;
+        });
+    }
+
+    public function hasImages(): bool
+    {
+        return !$this->images->isEmpty();
+    }
+
+    public function hasImage(ImageInterface $image): bool
+    {
+        return $this->images->contains($image);
+    }
+
+    public function addImage(ImageInterface $image): void
+    {
+        if (!$this->hasImage($image)) {
+            $this->images->add($image);
+            $image->setOwner($this);
+        }
+    }
+
+    public function removeImage(ImageInterface $image): void
+    {
+        if ($this->hasImage($image)) {
+            $this->images->removeElement($image);
+            $image->setOwner(null);
         }
     }
 }

@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 final class BrandType extends AbstractResourceType
 {
@@ -43,6 +44,14 @@ final class BrandType extends AbstractResourceType
             ->add('contactEmail', EmailType::class, [
                 'label' => 'sylius.ui.email',
                 'required' => true,
+            ])
+            ->add('images', LiveCollectionType::class, [
+                'entry_type' => BrandImageType::class,
+                'label' => 'sylius.ui.images',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'block_name' => 'entry',
             ])
         ;
     }

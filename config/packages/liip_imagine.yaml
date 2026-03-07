@@ -4,3 +4,7 @@ liip_imagine:
             web_path:
                 web_root: "%kernel.project_dir%/public"
                 cache_prefix: "media/cache"
+    filter_sets:
+        sylius_brand_logo:
+            filters:
+                thumbnail: { size: [ 260, 260 ], mode: outbound }

@@ -5,6 +5,10 @@
     <div class="card mb-3">
         <div class="card-header">
             <div class="card-title">
+                {% for image in brand.getImagesByType('logo') %}
+                    {% set path = image.path|imagine_filter(filter|default('sylius_brand_logo')) %}
+                    <img src="{{ path }}" alt="{{ brand.name }}"
+                {% endfor %}
                 {{ brand.name }}
             </div>
         </div>

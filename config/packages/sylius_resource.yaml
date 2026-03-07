@@ -13,3 +13,6 @@ sylius_resource:
             translation:
                 classes:
                     model: App\Entity\Brand\BrandTranslation
+        sylius.brand_image:
+            classes:
+                model: App\Entity\Brand\BrandImage
