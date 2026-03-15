@@ -52,3 +52,21 @@ sylius_twig_hooks:
             prepare:
                 template: 'admin/order/show/content/sections/shipment/item/actions/prepare.html.twig'
                 priority: 300
+                
+        'sylius_admin.brand.create.content.form.taxonomy':
+            brand_taxons:
+                component: 'sylius_admin:product:form:product_taxons'
+                props:
+                    form: '@=_context.form'
+                    template: 'admin/brand/form/product_taxons.html.twig'
+                configuration:
+                    auto_open: true
+        'sylius_admin.brand.update.content.form.taxonomy':
+            brand_taxons:
+                component: 'sylius_admin:product:form:product_taxons'
+                props:
+                    form: '@=_context.form'
+                    template: 'admin/brand/form/product_taxons.html.twig'
+                configuration:
+                    auto_open: true
+                

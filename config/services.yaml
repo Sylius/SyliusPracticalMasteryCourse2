@@ -109,3 +109,9 @@ services:
             - { name: kernel.event_listener, event: 'sylius.brand.pre_create', method: 'uploadImages' }
             - { name: kernel.event_listener, event: 'sylius.brand.pre_update', method: 'uploadImages' }
         
+    App\Form\Type\BrandTaxonAutocompleteChoiceType:
+        arguments:
+            - '@sylius.factory.brand_taxon'
+            - '@sylius.repository.brand_taxon'
+            -
+                - 'sylius'

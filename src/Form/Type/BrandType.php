@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type;
 
+use Sylius\Bundle\AdminBundle\Form\Type\TaxonAutocompleteType;
 use Sylius\Bundle\ChannelBundle\Form\Type\ChannelChoiceType;
 use Sylius\Bundle\LocaleBundle\Form\Type\LocaleChoiceType;
 use Sylius\Bundle\ResourceBundle\Form\EventSubscriber\AddCodeFormSubscriber;
@@ -13,6 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 final class BrandType extends AbstractResourceType
@@ -53,6 +56,20 @@ final class BrandType extends AbstractResourceType
                 'by_reference' => false,
                 'block_name' => 'entry',
             ])
+            ->add('mainTaxon', TaxonAutocompleteType::class, [
+                'label' => 'sylius.ui.main_taxon',
+                'multiple' => false,
+            ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
+                $brand = $event->getData();
+                $form = $event->getForm();
+
+                $form->add('brandTaxons', BrandTaxonAutocompleteChoiceType::class, [
+                    'label' => 'sylius.ui.taxons',
+                    'brand' => $brand,
+                    'multiple' => true,
+                ]);
+            })
         ;
     }
 

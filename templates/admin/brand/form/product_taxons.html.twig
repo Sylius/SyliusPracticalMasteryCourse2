@@ -1,0 +1,29 @@
+{{ form_label(form.brandTaxons) }}
+<div {{ stimulus_controller('@sylius/admin-bundle/product-taxon-tree', {treeData: this.tree, autoOpen: hookableMetadata.configuration.auto_open}) }}>
+    {{ form_widget(form.brandTaxons, {attr: {'data-sylius--admin-bundle--product-taxon-tree-target': 'productTaxons'}}) }}
+
+    <div class="pb-5">
+        <div class="input-group input-group-flat mb-4">
+            <input class="form-control" placeholder="{{ 'sylius.ui.filter'|trans }}" type="text"
+                {{ stimulus_target('@sylius/admin-bundle/product-taxon-tree', 'filter') }}
+                {{ stimulus_action('@sylius/admin-bundle/product-taxon-tree', 'filter', 'input') }}
+            />
+            <span class="input-group-text">
+            <a class="input-group-link link-reset" type="button" {{ stimulus_action('@sylius/admin-bundle/product-taxon-tree', 'clearFilter') }} >{{ 'sylius.ui.clear'|trans }}</a>
+        </span>
+        </div>
+        <div class="d-flex flex-column gap-1">
+            <div class="d-flex gap-3 align-items-center">
+                <a class="d-flex align-items-center gap-1 text-nowrap link-reset fs-5" type="button" {{ stimulus_action('@sylius/admin-bundle/product-taxon-tree', 'checkAll') }}>
+                    {{ ux_icon('tabler:copy-check', {'class': 'icon m-0'}) }}
+                    {{ 'sylius.ui.check_all'|trans }}
+                </a>
+                <a class="d-flex align-items-center gap-1 text-nowrap link-reset fs-5" type="button"  {{ stimulus_action('@sylius/admin-bundle/product-taxon-tree', 'uncheckAll') }}>
+                    {{ ux_icon('tabler:copy-x', {'class': 'icon m-0'}) }}
+                    {{ 'sylius.ui.uncheck_all'|trans }}
+                </a>
+            </div>
+            <div {{ stimulus_target('@sylius/admin-bundle/product-taxon-tree', 'tree') }}></div>
+        </div>
+    </div>
+</div>

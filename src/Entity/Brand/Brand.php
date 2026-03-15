@@ -14,6 +14,7 @@ use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Channel\Model\ChannelsAwareInterface;
 use Sylius\Component\Core\Model\ImageInterface;
 use Sylius\Component\Core\Model\ImagesAwareInterface;
+use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Locale\Model\LocaleInterface;
 use Sylius\Resource\Model\CodeAwareInterface;
 use Sylius\Resource\Model\ResourceInterface;
@@ -96,11 +97,19 @@ class Brand implements
     #[ORM\OneToMany(targetEntity: BrandImage::class, mappedBy: 'owner', cascade: ['all'], orphanRemoval: true)]
     private Collection $images;
 
+    #[ORM\ManyToOne(targetEntity: TaxonInterface::class)]
+    #[ORM\JoinColumn(name: 'main_taxon_id', referencedColumnName: 'id', nullable: true)]
+    private ?TaxonInterface $mainTaxon = null;
+
+    #[ORM\OneToMany(targetEntity: BrandTaxon::class, mappedBy: 'brand', cascade: ['all'], orphanRemoval: true)]
+    private Collection $brandTaxons;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
         $this->channels = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->brandTaxons = new ArrayCollection();
         $this->initializeTranslationsCollection();
     }
 
@@ -262,6 +271,42 @@ class Brand implements
         if ($this->hasImage($image)) {
             $this->images->removeElement($image);
             $image->setOwner(null);
+        }
+    }
+
+    public function getMainTaxon(): ?TaxonInterface
+    {
+        return $this->mainTaxon;
+    }
+
+    public function setMainTaxon(?TaxonInterface $mainTaxon): void
+    {
+        $this->mainTaxon = $mainTaxon;
+    }
+
+    public function getBrandTaxons(): Collection
+    {
+        return $this->brandTaxons;
+    }
+
+    public function hasBrandTaxon(BrandTaxon $brandTaxon): bool
+    {
+        return $this->brandTaxons->contains($brandTaxon);
+    }
+
+    public function addBrandTaxon(BrandTaxon $brandTaxon): void
+    {
+        if (!$this->hasBrandTaxon($brandTaxon)) {
+            $this->brandTaxons->add($brandTaxon);
+            $brandTaxon->setBrand($this);
+        }
+    }
+
+    public function removeBrandTaxon(BrandTaxon $brandTaxon): void
+    {
+        if ($this->hasBrandTaxon($brandTaxon)) {
+            $this->brandTaxons->removeElement($brandTaxon);
+            $brandTaxon->setBrand(null);
         }
     }
 }

@@ -72,3 +72,17 @@
         </div>
     </div>
 </div>
+
+<div class="card mb-3">
+    <div class="card-header">
+        {{ 'sylius.ui.taxonomy'|trans }}
+    </div>
+    <div class="card-body">
+        <div class="row">
+            {{ form_row(form.mainTaxon) }}
+        </div>
+        <div class="row">
+            {% hook 'taxonomy' %}
+        </div>
+    </div>
+</div>

@@ -16,3 +16,6 @@ sylius_resource:
         sylius.brand_image:
             classes:
                 model: App\Entity\Brand\BrandImage
+        sylius.brand_taxon:
+            classes:
+                model: App\Entity\Brand\BrandTaxon
