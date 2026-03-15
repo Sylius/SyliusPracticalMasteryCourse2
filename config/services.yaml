@@ -46,9 +46,10 @@ services:
 
     App\Cli\TestCommand:
         arguments:
-            - '@sylius.repository.brand'
-            - '@sylius_abstraction.state_machine'
-            - '@sylius.manager.brand'
+            - '@sylius.repository.taxon'
+            - '@sylius.factory.taxon'
+            - '@sylius.factory.taxon_translation'
+            - '@sylius.manager.taxon'
 
     App\Form\Type\BrandType:
         arguments:

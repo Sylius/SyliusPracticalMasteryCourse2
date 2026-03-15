@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Cli;
 
-use App\Entity\Brand\Brand;
-use App\SM\BrandTransitions;
 use Doctrine\ORM\EntityManagerInterface;
-use Sylius\Abstraction\StateMachine\StateMachineInterface;
-use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
+use Sylius\Component\Core\Model\TaxonInterface;
+use Sylius\Component\Taxonomy\Factory\TaxonFactoryInterface;
+use Sylius\Component\Taxonomy\Model\TaxonTranslationInterface;
+use Sylius\Component\Taxonomy\Repository\TaxonRepositoryInterface;
+use Sylius\Resource\Factory\FactoryInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,28 +19,45 @@ use Symfony\Component\Console\Output\OutputInterface;
 class TestCommand extends Command
 {
     public function __construct(
-        private RepositoryInterface $brandRepository,
-        private StateMachineInterface $stateMachine,
-        private EntityManagerInterface $brandManager,
+        private TaxonRepositoryInterface $taxonRepository,
+        private TaxonFactoryInterface $taxonFactory,
+        private FactoryInterface $taxonTranslationFactory,
+        private EntityManagerInterface $em,
     ) {
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var Brand $brand */
-        foreach ($this->brandRepository->findAll() as $brand) {
-            if (false === $this->stateMachine->can($brand, BrandTransitions::GRAPH, BrandTransitions::TRANSITION_APPROVE)) {
-                $output->writeln('Cannot apply transition to: ' . $brand->getName());
+        $parentCode = 'MENU_CATEGORY';
+        $code = 'shoes';
 
-                continue;
-            }
-
-            $this->stateMachine->apply($brand, BrandTransitions::GRAPH, BrandTransitions::TRANSITION_APPROVE);
+        $parentTaxon = $this->taxonRepository->findOneBy(['code' => $parentCode]);
+        if (!$parentTaxon instanceof TaxonInterface) {
+            $output->writeln('Taxon not found');
+            return Command::FAILURE;
         }
 
-        $this->brandManager->flush();
-        $output->writeln('Done!');
+        $taxon = $this->taxonRepository->findOneBy(['code' => $code]);
+        if ($taxon instanceof TaxonInterface) {
+            $output->writeln('Taxon already exists');
+            return Command::FAILURE;
+        }
+
+        $taxon = $this->taxonFactory->createForParent($parentTaxon);
+        $taxon->setCode($code);
+
+        /** @var TaxonTranslationInterface $taxonTranslation */
+        $taxonTranslation = $this->taxonTranslationFactory->createNew();
+        $taxonTranslation->setLocale('en_US');
+        $taxonTranslation->setName('Shoes');
+        $taxonTranslation->setSlug('shoes');
+        $taxonTranslation->setDescription('Awesome shoes!');
+
+        $taxon->addTranslation($taxonTranslation);
+
+        $this->em->persist($taxon);
+        $this->em->flush();
 
         return Command::SUCCESS;
     }
