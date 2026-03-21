@@ -46,10 +46,10 @@ services:
 
     App\Cli\TestCommand:
         arguments:
-            - '@sylius.repository.taxon'
-            - '@sylius.factory.taxon'
-            - '@sylius.factory.taxon_translation'
-            - '@sylius.manager.taxon'
+            - '@sylius.factory.product_attribute'
+            - '@sylius.factory.product_attribute_value'
+            - '@sylius.repository.product'
+            - '@doctrine.orm.entity_manager'
 
     App\Form\Type\BrandType:
         arguments:

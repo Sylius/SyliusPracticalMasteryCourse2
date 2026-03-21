@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Cli;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Sylius\Component\Core\Model\TaxonInterface;
-use Sylius\Component\Taxonomy\Factory\TaxonFactoryInterface;
-use Sylius\Component\Taxonomy\Model\TaxonTranslationInterface;
-use Sylius\Component\Taxonomy\Repository\TaxonRepositoryInterface;
+use Sylius\Component\Attribute\AttributeType\FloatAttributeType;
+use Sylius\Component\Attribute\Factory\AttributeFactoryInterface;
+use Sylius\Component\Attribute\Model\AttributeValueInterface;
+use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Resource\Factory\FactoryInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -19,9 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class TestCommand extends Command
 {
     public function __construct(
-        private TaxonRepositoryInterface $taxonRepository,
-        private TaxonFactoryInterface $taxonFactory,
-        private FactoryInterface $taxonTranslationFactory,
+        private AttributeFactoryInterface $attributeFactory,
+        private FactoryInterface $attributeValueFactory,
+        private ProductRepositoryInterface $productRepository,
         private EntityManagerInterface $em,
     ) {
         parent::__construct();
@@ -29,34 +29,23 @@ class TestCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $parentCode = 'MENU_CATEGORY';
-        $code = 'shoes';
+        $attribute = $this->attributeFactory->createTyped(FloatAttributeType::TYPE);
+        $attribute->setTranslatable(false);
+        $attribute->setCode('float_attribute');
+        $attribute->setName('Float Attribute');
 
-        $parentTaxon = $this->taxonRepository->findOneBy(['code' => $parentCode]);
-        if (!$parentTaxon instanceof TaxonInterface) {
-            $output->writeln('Taxon not found');
-            return Command::FAILURE;
-        }
+        $this->em->persist($attribute);
 
-        $taxon = $this->taxonRepository->findOneBy(['code' => $code]);
-        if ($taxon instanceof TaxonInterface) {
-            $output->writeln('Taxon already exists');
-            return Command::FAILURE;
-        }
+        /** @var AttributeValueInterface $attributeValue */
+        $attributeValue = $this->attributeValueFactory->createNew();
+        $attributeValue->setAttribute($attribute);
+        $attributeValue->setValue(3.14);
 
-        $taxon = $this->taxonFactory->createForParent($parentTaxon);
-        $taxon->setCode($code);
+        $this->em->persist($attributeValue);
 
-        /** @var TaxonTranslationInterface $taxonTranslation */
-        $taxonTranslation = $this->taxonTranslationFactory->createNew();
-        $taxonTranslation->setLocale('en_US');
-        $taxonTranslation->setName('Shoes');
-        $taxonTranslation->setSlug('shoes');
-        $taxonTranslation->setDescription('Awesome shoes!');
+        $product = $this->productRepository->findOneByCode('Adventurous_Aurora_Cap');
+        $product->addAttribute($attributeValue);
 
-        $taxon->addTranslation($taxonTranslation);
-
-        $this->em->persist($taxon);
         $this->em->flush();
 
         return Command::SUCCESS;
